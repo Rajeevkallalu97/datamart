@@ -1,44 +1,99 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Router from 'vue-router'
 import Home from '@/components/Home'
 import ViewSite from '@/components/ViewSite'
 import NewSite from '@/components/NewSite'
 import EditSite from '@/components/EditSite'
+import Login from '@/components/Login'
+import Register from '@/components/Register'
+import firebase from 'firebase'
 
-Vue.use(VueRouter)
+Vue.use(Router)
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    requiresAuth: false
+    meta: {
+      requiresAuth: true
+    }
   },
-
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    meta: {
+      requiresGuest: true
+    }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register,
+    meta: {
+      requiresGuest: true
+    }
+  },
   {
     path: '/new',
     name: 'new-site',
     component: NewSite,
-    requiresAuth: false
-  },
-  {
-    path: '/:site_id',
-    name: 'view-site',
-    component: ViewSite,
-    requiresAuth: false
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/edit/:site_id',
     name: 'edit-site',
     component: EditSite,
-    requiresAuth: false
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/:site_id',
+    name: 'view-site',
+    component: ViewSite,
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
-const router = new VueRouter({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
-
+// Nav Guard
+router.beforeEach((to, from, next) => {
+  // Check for requiresAuth guard
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // Check if NO logged user
+    if (!firebase.auth().currentUser) {
+      // Go to login
+      next({
+        path: '/login'
+      })
+    } else {
+      // Proceed to route
+      next()
+    }
+  } else if (to.matched.some(record => record.meta.requiresGuest)) {
+    // Check if NO logged user
+    if (firebase.auth().currentUser) {
+      // Go to login
+      next({
+        path: '/'
+      })
+    } else {
+      // Proceed to route
+      next()
+    }
+  } else {
+    // Proceed to route
+    next()
+  }
+})
 export default router

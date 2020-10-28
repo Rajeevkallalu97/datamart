@@ -1,9 +1,9 @@
 export default {
-  apiKey: 'AIzaSyAy9FWbaRz8Bjn34B0Lzo3UgSEVthDrJuo',
-  authDomain: 'datamart-17a8f.firebaseapp.com',
-  databaseURL: 'https://datamart-17a8f.firebaseio.com',
-  projectId: 'datamart-17a8f',
-  storageBucket: 'datamart-17a8f.appspot.com',
-  messagingSenderId: '746926379728',
-  appId: '1:746926379728:web:2ec8a5c86aca9d0b4304d5'
+  apiKey: 'AIzaSyCWKWQwCXvz1ycQkVFo4HJ9nH2Zm2HflYU',
+  authDomain: 'edge-water-management.firebaseapp.com',
+  databaseURL: 'https://edge-water-management.firebaseio.com',
+  projectId: 'edge-water-management',
+  storageBucket: 'edge-water-management.appspot.com',
+  messagingSenderId: '208208202658',
+  appId: '1:208208202658:web:c139632a6c5791263240fb'
 }

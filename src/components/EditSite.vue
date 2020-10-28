@@ -2,7 +2,7 @@
   <div id="new-site">
     <h3>Edit Site</h3>
     <div class="row">
-      <form @submit.prevent="saveEmployee" class="col s12">
+      <form @submit.prevent class="col s12">
         <div class="row">
           <div class="input-field col s12">
             <input type="text" v-model="site_id" required />
@@ -18,111 +18,94 @@
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="ph" required />
-            <label>pH [7.8 - 8.2]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="conductivity" required />
-            <label>Conductivity (μS/cm) [900 -1500]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="temperature" required />
-            <label>Temperature (°C) [Less than 25] </label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="chlorides" required />
-            <label>Chlorides (ppm) [Less than 400]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="iron" required />
-            <label>Iron (ppm) [Less than 3]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="hardness" required />
-            <label>T Hardness (ppm) [Less than 400]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="alkalinity" required />
-            <label>M Alkalinity [80 - 120]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="inhibitor" required />
-            <label>Inhibitor (ppm) [150 - 250]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="fah" required />
-            <label>FAH (ppm) [0.2 - 0.5]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="orp" required />
-            <label>ORP (mV) [450 - 550]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="hcc" required />
-            <label>HCC / LP (cfu/ml) [Less than 200,000]</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
             <input type="text" v-model="oh" required />
-            <label>OH Alkalinity (ppm) [450 - 550]</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
             <input type="text" v-model="cycles" required />
-            <label>cycles [450 - 550]</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="phosphate" required />
-            <label>Phosphate (ppm) [450 - 550]</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
             <input type="text" v-model="condensation" required />
-            <label>Condensation % [20 - 30]</label>
           </div>
           <h3>Water Consumption</h3>
           <div class="input-field col s12">
             <input type="text" v-model="melter" required />
-            <label>Melter WM</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="removed" required />
-            <label>Removed - D1 WM</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="d1" required />
-            <label>D1 WM Bleed</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="d2" required />
-            <label>D2 WM</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="d2_WM" required />
-            <label>D2 WM Bleed</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="process" required />
-            <label>Process WM</label>
           </div>
           <h3>Chemical Consumption</h3>
           <div class="input-field col s12">
             <input type="text" v-model="c_d1" required />
-            <label>Melter / D1</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="c_d2" required />
-            <label>D2</label>
           </div>
           <div class="input-field col s12">
             <input type="text" v-model="c_process" required />
-            <label>Process</label>
           </div>
         </div>
         <div style="text-align: center">
-          <button type="submit" class="btn" Width="89px">Submit</button>
+          <button
+            v-on:click="updateSite()"
+            type="submit"
+            class="btn"
+            Width="89px"
+          >
+            Submit
+          </button>
           &nbsp;
           <router-link to="/" class="btn grey">Cancel</router-link>
         </div>
@@ -132,7 +115,7 @@
 </template>
 
 <script>
-import db from './firebaseInit'
+import * as fb from './firebaseInit'
 export default {
   name: 'edit-site',
   data() {
@@ -171,7 +154,8 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    db.collection('sites')
+    fb.db
+      .collection('sites')
       .where('site_id', '==', to.params.site_id)
       .get()
       .then(querySnapshot => {
@@ -181,6 +165,32 @@ export default {
             vm.name = doc.data().name
             vm.location = doc.data().location
             vm.engineer = doc.data().engineer
+            vm.ph = doc.data().ph
+            vm.conductivity = doc.data().conductivity
+            vm.temperature = doc.data().temperature
+            vm.chlorides = doc.data().chlorides
+            vm.iron = doc.data().iron
+            vm.hardness = doc.data().hardness
+            vm.alkalinity = doc.data().alkalinity
+            vm.inhibitor = doc.data().inhibitor
+            vm.fah = doc.data().fah
+            vm.orp = doc.data().orp
+            vm.hcc = doc.data().hcc
+            vm.oh = doc.data().oh
+            vm.phosphate = doc.data().phosphate
+            vm.cycles = doc.data().cycles
+            vm.condensation = doc.data().condensation
+            //water
+            vm.melter = doc.data().melter
+            vm.removed = doc.data().removed
+            vm.d1 = doc.data().d1
+            vm.d2 = doc.data().d2
+            vm.d2_WM = doc.data().d2_WM
+            vm.process = doc.data().process
+            //chemical
+            vm.c_d1 = doc.data().c_d1
+            vm.c_d2 = doc.data().c_d2
+            vm.c_process = doc.data().c_process
           })
         })
       })
@@ -190,7 +200,8 @@ export default {
   },
   methods: {
     fetchData() {
-      db.collection('sites')
+      fb.db
+        .collection('sites')
         .where('site_id', '==', this.$route.params.site_id)
         .get()
         .then(querySnapshot => {
@@ -199,7 +210,6 @@ export default {
             this.name = doc.data().name
             this.location = doc.data().location
             this.engineer = doc.data().engineer
-
             this.ph = doc.data().ph
             this.conductivity = doc.data().conductivity
             this.temperature = doc.data().temperature
@@ -229,8 +239,9 @@ export default {
           })
         })
     },
-    updateEmployee() {
-      db.collection('sites')
+    updateSite() {
+      fb.db
+        .collection('sites')
         .where('site_id', '==', this.$route.params.site_id)
         .get()
         .then(querySnapshot => {

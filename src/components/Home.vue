@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import db from './firebaseInit'
+import * as fb from './firebaseInit'
 export default {
   name: 'home',
   data() {
@@ -35,7 +35,9 @@ export default {
     }
   },
   created() {
-    db.collection('sites')
+    console.log(this.$store.state.userProfile)
+    fb.db
+      .collection('sites')
       .orderBy('location')
       .get()
       .then(querySnapshot => {

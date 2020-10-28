@@ -2,7 +2,7 @@
   <div id="new-site">
     <h3>New Site</h3>
     <div class="row">
-      <form @submit.prevent="saveEmployee" class="col s12">
+      <form @submit.prevent="saveSite" class="col s12">
         <div class="row">
           <div class="input-field col s12">
             <input type="text" v-model="site_id" required />
@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import db from './firebaseInit'
+import * as fb from './firebaseInit'
 export default {
   name: 'new-site',
   data() {
@@ -175,8 +175,9 @@ export default {
     }
   },
   methods: {
-    saveEmployee() {
-      db.collection('sites')
+    saveSite() {
+      fb.db
+        .collection('sites')
         .add({
           site_id: this.site_id,
           name: this.name,
@@ -215,7 +216,7 @@ export default {
           this.$router.push('/')
         })
         .catch(error => {
-          console.error('Error adding employee: ', error)
+          console.error('Error adding site: ', error)
         })
     }
   }

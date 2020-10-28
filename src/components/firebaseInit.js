@@ -1,5 +1,9 @@
 import firebase from 'firebase'
 import 'firebase/firestore'
 import firebaseConfig from './firebaseConfig'
-const firebaseApp = firebase.initializeApp(firebaseConfig)
-export default firebaseApp.firestore()
+firebase.initializeApp(firebaseConfig)
+const db = firebase.firestore()
+const auth = firebase.default.auth()
+const usersCollection = db.collection('users')
+// export utils/refs
+export { db, auth, usersCollection }

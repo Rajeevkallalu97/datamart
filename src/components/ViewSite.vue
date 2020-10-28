@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import db from './firebaseInit'
+import * as fb from './firebaseInit'
 export default {
   name: 'view-site',
   data() {
@@ -40,7 +40,8 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    db.collection('sites')
+    fb.db
+      .collection('sites')
       .where('site_id', '==', to.params.site_id)
       .get()
       .then(querySnapshot => {
@@ -73,7 +74,8 @@ export default {
     },
     deleteSite() {
       if (confirm('Are you sure?')) {
-        db.collection('sites')
+        fb.db
+          .collection('sites')
           .where('site_id', '==', this.$route.params.site_id)
           .get()
           .then(querySnapshot => {
